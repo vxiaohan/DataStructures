@@ -4,19 +4,24 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 
-public class MyLinkedList<AnyType> implements Iterator<AnyType> {
+public class MyLinkedList<AnyType> implements Iterable<AnyType> {
+	
 	private int size;
 	private Node<AnyType> beginNode;
 	private Node<AnyType> endNode;
 	private int modCount = 0;
+	
 	public MyLinkedList() {
 		// TODO Auto-generated constructor stub
 		clear();
 	}
-	public void remove(Node<AnyType> node){
+	private void remove(Node<AnyType> node){
 		node.preNode.nextNode = node.nextNode;
 		node.nextNode.preNode = node.preNode;
 		size--;
+	}
+	public void remove(int index){
+		remove(getNode(index));
 	}
 	public void clear(){
 		beginNode = new Node<AnyType>(null, null, null);
@@ -58,28 +63,28 @@ public class MyLinkedList<AnyType> implements Iterator<AnyType> {
 	public void addTail(AnyType x){
 		addBefore(endNode, x);
 	}
-	public void addBefore(Node<AnyType> p, AnyType x){
+	public void addIndex(int index, AnyType x){
+		if (index == 0) {
+			addHead(x);
+		}else if (index == size()-1) {
+			addTail(x);
+		}else {
+			addBefore(getNode(index), x);
+		}
+	}
+	private void addBefore(Node<AnyType> p, AnyType x){
 		Node<AnyType> node = new Node<AnyType>(x, p.preNode, p);
 		node.preNode.nextNode = node;
 		p.preNode = node;
 		size++;
 	}
-	public void addAfter(Node<AnyType> p, AnyType x){
+	private void addAfter(Node<AnyType> p, AnyType x){
 		Node<AnyType> node = new Node<AnyType>(x, p, p.nextNode);
 		p.nextNode.preNode = node;
 		p.nextNode = node;
 		size++;
 	}
-	@Override
-	public boolean hasNext() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-	@Override
-	public AnyType next() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 	public AnyType get(int index){
 		return getNode(index).data;
 	}
@@ -92,6 +97,10 @@ public class MyLinkedList<AnyType> implements Iterator<AnyType> {
 			this.preNode = pre;
 			this.nextNode = next;
 		}
+	}
+	@Override
+	public Iterator<AnyType> iterator(){
+		return new LinkedListIterator();
 	}
 	private class LinkedListIterator implements Iterator<AnyType>{
 		private Node<AnyType> current = beginNode.nextNode;
@@ -108,11 +117,6 @@ public class MyLinkedList<AnyType> implements Iterator<AnyType> {
 			current = current.nextNode;
 			okToRemove = true;
 			return nextItem;
-		}
-		public void remove(){
-			if (!okToRemove) {
-				throw new IllegalStateException();
-			}
 		}
 	}
 

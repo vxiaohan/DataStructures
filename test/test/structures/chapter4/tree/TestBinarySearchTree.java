@@ -93,4 +93,18 @@ public class TestBinarySearchTree {
 			}
 		}
 	}
+	@Test
+	public void testPreOrderPrint(){
+		binarySearchTree.insert("5");
+		assertEquals(true, binarySearchTree.contains("5"));
+			for (int i = 0; i < 10; i++) {
+				//int k = 100 - i;
+				binarySearchTree.insert(Integer.toString(i));
+				//binarySearchTree.insert(Integer.toString(k));
+			}
+			for (int i = 0; i < 10; i++) {
+				assertEquals(true, binarySearchTree.contains(Integer.toString(i)));
+			}
+			binarySearchTree.preOrderPrint();
+	}
 }

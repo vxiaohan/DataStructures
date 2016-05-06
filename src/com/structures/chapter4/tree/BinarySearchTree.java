@@ -167,6 +167,16 @@ public class BinarySearchTree<T extends Comparable<? super T>>  {
 		}
 		return node;
 	}
+	public void  preOrderPrint(){
+		preOrderPrint(rootNode);
+	}
+	private void preOrderPrint(BinaryNode<T> node){
+		if (node != null) {
+			System.out.println(node.content);
+			preOrderPrint(node.leftNode);
+			preOrderPrint(node.rightNode);
+		}
+	}
 	private static class BinaryNode<T>{
 		//public BinaryNode<T> fatherBinaryNode;
 		public BinaryNode<T> leftNode;
